@@ -75,6 +75,7 @@ stages:
       inputs:
         provider: azurerm
         command: plan
+        workingDirectory: $(workingDirectory)
         environmentServiceNameAzureRM: $(serviceConnection)
         commandOptions: '-out=tfplan'
 
@@ -124,6 +125,7 @@ stages:
       inputs:
         provider: azurerm
         command: apply
+        workingDirectory: $(workingDirectory)
         environmentServiceNameAzureRM: $(serviceConnection)
         commandOptions: '-out=tfplan'
 
