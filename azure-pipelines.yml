@@ -65,7 +65,6 @@ stages:
         provider: 'azurerm'
         command: 'init'
         workingDirectory: $(workingDirectory)
-        commandOptions: '-out=tfplan -var-file=env/dev/dev.tfvars'
         backendServiceArm: $(serviceConnection)
         backendAzureRmResourceGroupName: 'rg-terraform-state'
         backendAzureRmStorageAccountName: 'devstorage01234'
@@ -79,7 +78,7 @@ stages:
         command: plan
         workingDirectory: $(workingDirectory)
         environmentServiceNameAzureRM: $(serviceConnection)
-        commandOptions: '-out=tfplan'
+        commandOptions: '-out=tfplan -var-file=env/dev/dev.tfvars'
 
     - task: PublishPipelineArtifact@1
       displayName: Publish tfplan
