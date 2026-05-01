@@ -78,7 +78,7 @@ stages:
         command: plan
         workingDirectory: $(workingDirectory)
         environmentServiceNameAzureRM: $(serviceConnection)
-        commandOptions: '-out=tfplan -var-file=env/dev/dev.tfvars'
+        commandOptions: '-out=tfplan -var-file=dev.tfvars'
 
     - task: PublishPipelineArtifact@1
       displayName: Publish tfplan
