@@ -83,7 +83,7 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: Publish tfplan
       inputs:
-        targetPath: '$(workingDir)/tfplan'
+        targetPath: '$(workingDir)/tfplan -var-file=dev.tfvars'
         artifact: tfplan
 
 # ---------------- APPLY ---------------
