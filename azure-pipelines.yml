@@ -83,7 +83,7 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: Publish tfplan
       inputs:
-        targetPath: '$(workingDir)/tfplan -var-file=dev.tfvars'
+        targetPath: '$(workingDirectory)/tfplan'
         artifact: tfplan
 
 # ---------------- APPLY ---------------
@@ -119,7 +119,7 @@ stages:
       displayName: Download tfplan
       inputs:
         artifact: tfplan
-        path: $(workingDir)
+        path: $(workingDirectory)
     
     - task: TerraformTaskV4@4
       displayName: "Terraform apply"
