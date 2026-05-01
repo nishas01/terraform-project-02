@@ -58,12 +58,14 @@ stages:
       inputs:
         terraformVersion: $(terraformVersion)
 
+  
     - task: TerraformTaskV4@4
       displayName: "Terraform Init"
       inputs:
         provider: 'azurerm'
         command: 'init'
         workingDirectory: $(workingDirectory)
+        commandOptions: '-out=tfplan -var-file=env/dev/dev.tfvars'
         backendServiceArm: $(serviceConnection)
         backendAzureRmResourceGroupName: 'rg-terraform-state'
         backendAzureRmStorageAccountName: 'devstorage01234'
