@@ -38,8 +38,9 @@ stages:
     - task: TerraformTaskV4@4
       displayName: "Terraform Validate"
       inputs:
-        provider: azurerm
-        command: validate
+        provider: 'azurerm'
+        command: 'validate'
+        workingDirectory: $(workingDirectory)
 
 # ---------------- PLAN ----------------
 - stage: Plan
@@ -58,7 +59,6 @@ stages:
       inputs:
         terraformVersion: $(terraformVersion)
 
-  
     - task: TerraformTaskV4@4
       displayName: "Terraform Init"
       inputs:
@@ -74,8 +74,8 @@ stages:
     - task: TerraformTaskV4@4
       displayName: "Terraform Plan"
       inputs:
-        provider: azurerm
-        command: plan
+        provider: 'azurerm'
+        command: 'plan'
         workingDirectory: $(workingDirectory)
         environmentServiceNameAzureRM: $(serviceConnection)
         commandOptions: '-out=tfplan -var-file=dev.tfvars'
@@ -86,7 +86,7 @@ stages:
         targetPath: '$(workingDirectory)/tfplan'
         artifact: tfplan
 
-# ---------------- APPLY ---------------
+# ---------------- APPLY (FIXED) ----------------
 - stage: Apply
   displayName: "Terraform Apply"
   dependsOn: Plan
@@ -115,18 +115,20 @@ stages:
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'dev.terraform.tfstate'
 
-    - task: DownloadPipelineArtifact@2
-      displayName: Download tfplan
-      inputs:
-        artifact: tfplan
-        path: $(workingDirectory)
-    
     - task: TerraformTaskV4@4
-      displayName: "Terraform apply"
+      displayName: "Terraform Plan"
       inputs:
-        provider: azurerm
-        command: apply
+        provider: 'azurerm'
+        command: 'plan'
         workingDirectory: $(workingDirectory)
         environmentServiceNameAzureRM: $(serviceConnection)
-        commandOptions: 'tfplan'
+        commandOptions: '-out=tfplan -var-file=dev.tfvars'
 
+    - task: TerraformTaskV4@4
+      displayName: "Terraform Apply"
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: $(workingDirectory)
+        environmentServiceNameAzureRM: $(serviceConnection)
+        commandOptions: '-auto-approve tfplan'
